@@ -282,10 +282,11 @@ bool BoolVector::operator==(const BoolVector& _other) const
     if (this == &_other)
         return true;
 
-    size_t border = (mByteSize < _other.mByteSize) ? mByteSize : _other.mByteSize;
-    for (unsigned int i = 0; i < border; i++)
+    for (unsigned int i = 0; i < mBitSize; i++)
         if (mPointer[i] != _other.mPointer[i])
            return false;
+	
+	return true;
 }
 
 bool BoolVector::operator!=(const BoolVector& _other) const
