@@ -35,7 +35,4 @@ public:
 	BoolMatrix operator^(const BoolMatrix& _other);
 	BoolMatrix& operator^=(const BoolMatrix& _other);
 	BoolMatrix operator~();	
-	
-	friend std::ostream& operator<<(std::ostream& _out, const BoolMatrix& _object);
-	friend std::istream& operator>>(std::istream& _in, BoolMatrix& _obejct);	
 };
