@@ -118,6 +118,9 @@ void BoolMatrix::set(const int _row, const int _column, const bool _value, const
 
 BoolMatrix& BoolMatrix::operator=(const BoolMatrix& _other)
 {
+	if (this == &_other) {
+		return *this;
+	}
 	rows_ = new BoolVector[_other.nRows_];
 	nRows_ = _other.nRows_;
 	nColumns_ = _other.nColumns_;
