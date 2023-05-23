@@ -7,24 +7,56 @@ BoolMatrix::BoolMatrix()
 	nColumns_ = 0;
 }
 
-BoolMatrix::BoolMatrix(const int _nRows, const int nColumns)
+BoolMatrix::BoolMatrix(const int _nRows, const int _nColumns)
 {
+	if (_nRows < 0)
+		throw "_nRows must greater or equal 0";
+	else if (_nRows == 0) {
+		BoolMatrix();
+		return;
+	}
+
+	if (_nColumns < 0)
+		throw "_nColumns must greater or equal 0";
+
 	rows_ = new BoolVector[_nRows];
 	for (int i = 0; i < _nRows; i++) {
-		rows_[i] = BoolVector(nColumns);
+		rows_[i] = BoolVector(_nColumns);
 	}
-	nColumns_ = nColumns;
+	nColumns_ = _nColumns;
 	nRows_ = _nRows;
 }
 
-BoolMatrix::BoolMatrix(const int _nRows, const int _nColumns, const char** _str)
+BoolMatrix::BoolMatrix(const int _nRows, const char** _str)
 {
+	if (_nRows > 0) {
+		nColumns_ = strlen(_str[0]);
+		for (int i = 1; i < _nRows; i++) {
+			if (nColumns_ < strlen(_str[i]))
+				nColumns_ = strlen(_str[i]);
+		}
+	}
+	else if (_nRows < 0) {
+		throw "_nRows must be greater or equal 0";
+	}
+	else {
+		BoolMatrix();
+		return;
+	}
+
 	rows_ = new BoolVector[_nRows];
 	for (int i = 0; i < _nRows; i++) {
+
+		// if (i > 0 && new_row.bitSize != rows_[i - 1].bitSize) {
+		// 	 throw "Matrix rows must have same size";
+		// }
+
+
 		rows_[i] = BoolVector(_str[i]);
+		rows_[i].resize(nColumns_);
 	}
+
 	nRows_ = _nRows;
-	nColumns_ = _nColumns;
 }
 
 BoolMatrix::BoolMatrix(const BoolMatrix& _other)
@@ -46,7 +78,7 @@ unsigned int BoolMatrix::weight() const
 {
 	int weight = 0;
 	for (int i = 0; i < nRows_; i++) {
-		weight = rows_[i].weight();
+		weight += rows_[i].weight();
 	}
 	return weight;
 }
@@ -111,7 +143,7 @@ void BoolMatrix::set(const int _row, const int _column, const bool _value, const
 {
 	if (_row < 0 || _row >= nRows_)
 		throw "Index out of range";
-	if (_column < 0 || _column >= nColumns_  || _column + _count >= nColumns_)
+	if (_column < 0 || _column >= nColumns_ || _column + _count >= nColumns_)
 		throw "Index out of range";
 	rows_[_row].set(_column, _count, _value);
 }
@@ -197,14 +229,16 @@ BoolMatrix BoolMatrix::operator~()
 }
 
 std::ostream& operator<<(std::ostream& _out, const BoolMatrix& _object) {
-	for(int i = 0; i < _object.nRows_; i++) {
+	_out << '\n';
+	for (int i = 0; i < _object.nRows_; i++) {
 		_out << _object.rows_[i];
+		_out << '\n';
 	}
 	return _out;
-}	
+}
 
 std::istream& operator>>(std::istream& _in, BoolMatrix& _object) {
-	for(int i = 0; i < _object.nRows_; i++) {
+	for (int i = 0; i < _object.nRows_; i++) {
 		_in >> _object.rows_[i];
 	}
 	return _in;

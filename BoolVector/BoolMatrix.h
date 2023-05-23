@@ -1,7 +1,7 @@
 #pragma once
 #include "BoolVector.h"
 #include "BoolRank.h"
-
+#include <string.h>
 
 class BoolMatrix {
 private:
@@ -12,9 +12,12 @@ private:
 public:
 	BoolMatrix();
 	BoolMatrix(const int _nRows, const int _nColumns);
-	BoolMatrix(const int _nRows, const int _nColumns, const char** _str);
+	BoolMatrix(const int _nRows, const char** _str);
 	BoolMatrix(const BoolMatrix& _other);
 	~BoolMatrix();
+
+	size_t sizeRows() const { return nRows_; }
+	size_t sizeColumns() const { return nColumns_; }
 
 	unsigned int weight() const;
 	unsigned int weight(const int _row) const;
@@ -34,7 +37,7 @@ public:
 	BoolMatrix& operator|=(const BoolMatrix& _other);
 	BoolMatrix operator^(const BoolMatrix& _other);
 	BoolMatrix& operator^=(const BoolMatrix& _other);
-	BoolMatrix operator~();	
+	BoolMatrix operator~();
 	
 	friend std::ostream& operator<<(std::ostream& _out, const BoolMatrix& _object);
 	friend std::istream& operator>>(std::istream& _in, BoolMatrix& _obejct);	

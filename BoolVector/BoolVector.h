@@ -2,6 +2,10 @@
 #include <iostream>
 #include "BoolRank.h"
 
+
+class BoolMatrix;
+
+
 class BoolVector
 {
 private:
@@ -9,7 +13,9 @@ private:
     size_t   mBitSize;
     size_t   mByteSize;
 
+    void resize(const int _size);
 
+	friend class BoolMatrix;
 public:
     BoolVector();
     BoolVector(const int _size);
@@ -21,7 +27,6 @@ public:
     int  bitSize() const;
     int  byteSize() const;
     int  weight() const;
-    void resize(const int _size);
 
     void inverse();
     void inverse(const int _pos);
